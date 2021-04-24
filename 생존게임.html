@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<title>!생존게임!</title>
+<html>
+<head>
+    <style>
+        .tooltip {
+            display: inline-block;
+        }
+
+            .tooltip .tooltip-content {
+                visibility: hidden;
+                width: 300px;
+                background-color: gray;
+                padding: 0;
+                margin-top: 10px;
+                color: white;
+                text-align: center;
+                position: absolute;
+                z-index: 6;
+            }
+
+            .tooltip .tooltip-content2 {
+                visibility: hidden;
+                width: 70px;
+                padding: 0;
+                margin-top: 10px;
+                color: white;
+                text-align: center;
+                position: absolute;
+                z-index: 6;
+            }
+
+            .tooltip:hover .tooltip-content {
+                visibility: visible;
+            }
+
+            .tooltip:hover .tooltip-content2 {
+                visibility: visible;
+            }
+    </style>
+</head>
+<body onkeydown='on_key_down()'>
+    <img id=basicbg src="./resource/img/background/basicbg.png">
+    <img id=minseong src="./resource/img/etc/minseong.gif" style="position: absolute; left: 80px; top: 260px;">
+    <img id=statusbar src="./resource/img/ui/statusbar.png" style="position: absolute; left: 12px; top: 19px;">
+    <div class="tooltip">
+        <img class="tooltip" id=exped src="./resource/img/ui/exped.png" style="position: absolute; left: 12px; top: 513px;" onclick="">
+        <div class="tooltip-content2" style="position: absolute; left: 12px; top: 490px; z-index:8;">
+            <span id="expInfo" style="color: red;">탐험하기</span>
+        </div>
+    </div>
+    <div class="tooltip">
+        <img class="tooltip" id=next src="./resource/img/ui/next.png" style="position: absolute; left: 112px; top: 513px;" onclick="">
+        <div class="tooltip-content2" style="position: absolute; left: 112px; top: 490px;">
+            <span id="nexInfo" style="color: red;">잠자기</span>
+        </div>
+    </div>
+    <div class="tooltip">
+        <img id=crafting src="./resource/img/ui/crafting.png" style="position: absolute; left: 212px; top: 513px;" onclick="">
+        <div class="tooltip-content2" style="position: absolute; left: 212px; top: 490px;">
+            <span id="nexInfo" style="color: red;">제작하기</span>
+        </div>
+    </div>
+    <div class="tooltip">
+        <img id=harvesting src="./resource/img/ui/harvest.png" style="position: absolute; left: 312px; top: 513px;" onclick="">
+        <div class="tooltip-content2" style="position: absolute; left: 312px; top: 490px;">
+            <span id="nexInfo" style="color: red;">재배하기</span>
+        </div>
+    </div>
+    <img id=explorering src="./resource/img/background/explorer.png" style="position:absolute; left: 10px; top: 10px; z-index:3; display:none;  z-index: 8; opacity:0.5">
+    <img id=nextday src="./resource/img/background/nextday.png" style="position:absolute; left: 10px; top: 10px; z-index:3; display:none;  z-index: 8; opacity:0.5">
+    <img id=chess src="./resource/img/item/chess.png" style="position: absolute; left: 340px; top: 400px; z-index:1; display: none;" onclick="">
+
+    <form id=crafting_table style="position: absolute; left: 100px; top: 50px; display: none;">
+        <img id=c1 src="./resource/img/ui/mt.png" style="position: absolute; left: 0px; top: 0px; z-index:5;" onclick="">
+        <img id=X src="./resource/img/ui/x.png" style="position: absolute; left: 422px; top: 0px;" onclick="">
+        <img id=craftchess src="./resource/img/ui/craftchess.png" style="position: absolute; left: 17px; top: 30px; z-index:6;" onclick="">
+    </form>
+
+    <form id=message_popup style="position: absolute; left: 100px; top: 200px; display: block;">
+        <img id=message_popup src="./resource/img/ui/ms.png" style="position: absolute; left: 0px; top: 0px; z-index:5;" onclick="dialogText();">
+        <img id=X2 src="./resource/img/ui/x.png" style="position: absolute; left: 422px; top: 0px; " onclick="">
+        <span id=message style="position: absolute; left: 30px; top: 30px; color: white; z-index: 7; width: 380px;">[메시지창은클릭/인벤토리창은i]</span>
+    </form>
+
+
+    <form id=harvesting_table style="position: absolute; left: 100px; top: 50px; display: none;">
+        <img id=h1 src="./resource/img/ui/hv.png" style="position: absolute; left: 0px; top: 0px; z-index:5;" onclick="">
+        <img id=X1 src="./resource/img/ui/x.png" style="position: absolute; left: 422px; top: 0px;" onclick="">
+        <img id=hvm src="./resource/img/ui/hvm.png" style="position: absolute; left: 432px; top: 30px;" onclick="">
+        <img id=hvs src="./resource/img/ui/hvs.png" style="position: absolute; left: 432px; top: 80px; display: block;" onclick="">
+        <form id=harvesting_table style="position: absolute; left: 0px; top: 0px; display: block;">
+            <img id=s0 src="./resource/img/seed/0.png" style="position: absolute; left: 36px; top: 65px; z-index:5;" onclick="">
+            <img id=s1 src="./resource/img/seed/0.png" style="position: absolute; left: 36px; top: 105px; z-index:5;" onclick="">
+            <img id=s2 src="./resource/img/seed/0.png" style="position: absolute; left: 36px; top: 145px; z-index:5;" onclick="">
+        </form>
+    </form>
+
+    <form id=inventory style="display: none;">
+        <img src="./resource/img/inventory/invenbg.png" style="position: absolute; left: 200px; top: 100px;" onclick="">
+
+        <div class="tooltip">
+            <img class="tooltip" id='i0' src="./resource/img/inventory/0.png" style="position: absolute; left: 220px; top: 140px; display: block;" onclick="cI(0);">
+            <div class="tooltip-content" style="position: absolute; left: 230px; top: 180px;">
+                <span id="itemInfo0">myInventory[0]</span>
+            </div>
+        </div>
+
+        <div class="tooltip">
+            <img class="tooltip" id='i1' src="./resource/img/inventory/0.png" style="position: absolute; left: 280px; top: 140px; display: block;" onclick="cI(1);">
+            <div class="tooltip-content" style="position: absolute; left: 290px; top: 180px;">
+                <span id="itemInfo1">myInventory[0]</span>
+            </div>
+        </div>
+
+        <div class="tooltip">
+            <img class="tooltip" id='i2' src="./resource/img/inventory/0.png" style="position: absolute; left: 340px; top: 140px; display: block;" onclick="cI(2);">
+            <div class="tooltip-content" style="position: absolute; left: 350px; top: 180px;">
+                <span id="itemInfo2">myInventory[0]</span>
+            </div>
+        </div>
+        <div class="tooltip">
+            <img class="tooltip" id='i3' src="./resource/img/inventory/0.png" style="position: absolute; left: 220px; top: 200px; display: block;" onclick="cI(3);">
+            <div class="tooltip-content" style="position: absolute; left: 230px; top: 240px;">
+                <span id="itemInfo3">myInventory[0]</span>
+            </div>
+        </div>
+        <div class="tooltip">
+            <img class="tooltip" id='i4' src="./resource/img/inventory/0.png" style="position: absolute; left: 280px; top: 200px; display: block;" onclick="cI(4);">
+            <div class="tooltip-content" style="position: absolute; left: 290px; top: 240px;">
+                <span id="itemInfo4">myInventory[0]</span>
+            </div>
+        </div>
+        <div class="tooltip">
+            <img class="tooltip" id='i5' src="./resource/img/inventory/0.png" style="position: absolute; left: 340px; top: 200px; display: block;" onclick="cI(5);">
+            <div class="tooltip-content" style="position: absolute; left: 350px; top: 240px;">
+                <span id="itemInfo5">myInventory[0]</span>
+            </div>
+        </div>
+        <div class="tooltip">
+            <img class="tooltip" id='i6' src="./resource/img/inventory/0.png" style="position: absolute; left: 220px; top: 260px; display: block;" onclick="cI(6);">
+            <div class="tooltip-content" style="position: absolute; left: 230px; top: 300px;">
+                <span id="itemInfo6">myInventory[0]</span>
+            </div>
+        </div>
+        <div class="tooltip">
+            <img class="tooltip" id='i7' src="./resource/img/inventory/0.png" style="position: absolute; left: 280px; top: 260px; display: block;" onclick="cI(7);">
+            <div class="tooltip-content" style="position: absolute; left: 290px; top: 300px;">
+                <span id="itemInfo7">myInventory[0]</span>
+            </div>
+        </div>
+        <div class="tooltip">
+            <img class="tooltip" id='i8' src="./resource/img/inventory/0.png" style="position: absolute; left: 340px; top: 260px; display: block;" onclick="cI(8);">
+            <div class="tooltip-content" style="position: absolute; left: 350px; top: 300px;">
+                <span id="itemInfo8">myInventory[0]</span>
+            </div>
+        </div>
+        <div class="tooltip">
+            <img class="tooltip" id='i9' src="./resource/img/inventory/0.png" style="position: absolute; left: 220px; top: 320px; display: block;" onclick="cI(9);">
+            <div class="tooltip-content" style="position: absolute; left: 230px; top: 360px;">
+                <span id="itemInfo9">myInventory[0]</span>
+            </div>
+        </div>
+
+        <img id='eq' src="./resource/img/inventory/eq.png" style="position: absolute; left: 400px; top: 140px; display: block;" onclick="equip()">
+        <img id='ab' src="./resource/img/inventory/ab.png" style="position: absolute; left: 400px; top: 170px; display: block;" onclick="aband()">
+    </form>
+
+
+    <div class="progress">
+        <div class="progress" id="hgr-bar" style="position: absolute; left: 35px; top:20px; height: 4px; width: 20; background-color: red; z-index:0;"></div>
+        <div class="progress">
+            <div class="progress" id="thr-bar" style="position: absolute; left: 34px; top:40px; height: 4px; width: 22%; background-color: #3f48cc; z-index:0;"></div>
+            <div class="progress">
+                <div class="progress" id="str-bar" style="position: absolute; left: 35px; top:60px; height: 4px; width: 22%; background-color: #37550f; z-index:0;"></div>
+                <span id="minseong-hgr" style="position: absolute; color: white; left: 55px; top: 20px;"></span>
+                <span id="minseong-thr" style="position: absolute; color: white; left: 55px; top: 41px;"></span>
+                <span id="minseong-str" style="position: absolute; color: white; left: 55px; top: 62px;"></span>
+                <span id="minseong-st" style="position: absolute; color: white; left: 55px; top: 83px;"></span>
+                <span id="material-wood" style="position: absolute; color: brown; left: 555px; top: 20px;">나무</span>
+                <span id="material-mot" style="position: absolute; color: gray; left: 555px; top: 41px;">못</span>
+                <span id="today" style="position: absolute; font-size: 1em; color: green; left: 210px; top: 62px;">날짜</span>
+
+                <script id=script1 src="./resource/function/base.js"></script>
+                <script id=script2 src="./resource/function/inventory.js"></script>
+                <script id=script3 src="./resource/function/ui.js"></script>
+                <script id=script4 src="./resource/function/main.js"></script>
+                <script id=script5 src="./resource/function/item.js"></script>
+                <script id=script6 src="./resource/function/status.js"></script>
+</body>
+<script>
+var initiate=0;// 처음
+var initiate2=0;//날짜
+
+if(initiate==0){
+getItemId=Math.floor(1+17*Math.random());
+getItem(getItemId);
+getItemId=Math.floor(1+17*Math.random());
+getItem(getItemId);
+getItemId=Math.floor(1+17*Math.random());
+getItem(getItemId);
+getItemId=Math.floor(1+17*Math.random());
+getItem(getItemId);
+getItemId=Math.floor(1+17*Math.random());
+getItem(getItemId);
+initiate=1;
+}
+
+
+
+</script>
+</html>
